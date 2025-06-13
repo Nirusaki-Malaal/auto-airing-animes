@@ -1,0 +1,13 @@
+pyrogram
+libtorrent
+AnilistPython==0.1.3
+feedparser
+httplib2==0.15.0
+PyDrive
+pyromod
+TgCrypto
+pymongo[srv]
+aiohttp
+hachoir
+anitopy
+asyncio
