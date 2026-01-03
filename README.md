@@ -3,7 +3,7 @@
 > *"If you were to turn into a snake tomorrow and began devouring humans, and from the same mouth you devoured them, you cried out to me 'I Love You!'... Would I still be able to say 'I Love You' the same way I do today?"*
 
 <p align="center">
-  <img src="https://imgur.com/a/pk3UxLB" alt="Bleach Banner" width="100%">
+  <img src="https://i.imgur.com/tjFZK7W.jpeg" alt="Bleach Banner" width="100%">
 </p>
 
 <p align="center">
