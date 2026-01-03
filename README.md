@@ -1,4 +1,4 @@
-# ⚔️ Shinigami Auto Uploader Bot 🌑
+# ⚔️ AUTO AIRING ANIMES 🌑
 
 > *"If you were to turn into a snake tomorrow and began devouring humans, and from the same mouth you devoured them, you cried out to me 'I Love You!'... Would I still be able to say 'I Love You' the same way I do today?"*
 
