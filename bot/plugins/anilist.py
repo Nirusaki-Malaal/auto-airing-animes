@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from bot import LOGS, Config
 from AnilistPython import Anilist
-from .search import shorten, airing_query, fav_query, anime_query, character_query, manga_query, GRAPHQL
+from .search import anime_query, GRAPHQL
 import requests, shutil, os
 
 # Anime Command

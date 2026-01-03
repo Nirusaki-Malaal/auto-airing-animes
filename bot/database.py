@@ -1,6 +1,6 @@
 from bot import collection, queue, Config, LOGS
-import pymongo, ast
-from .plugins.helper import get_first_title
+import ast
+from .plugins.helper import parse
 list_handler = []
 db_data = []
 
@@ -8,7 +8,7 @@ def pgk():
   if collection.find_one({'_id' : Config.AUTH_USERS[0]}):
     LOGS.info("YES")
   else:
-    title = get_first_title()
+    title = parse()[0]['title']
     collection.insert_one({'_id' : Config.AUTH_USERS[0], 'title' : title})
     
 def get_latest_anime():
@@ -20,12 +20,14 @@ def update_latest_anime(title):
    newquery = {'$set': { 'title': title }}
    collection.update_one(myquery, newquery)
 
-def napana():
+def clear_queue():
+    queue.delete_many({})
+
+def fetch():
   queries = queue.find({})
-  for query in queries:
-   que = str(query["queue"])
-   b = ast.literal_eval(que)
-   if not query["_id"] in list_handler: 
+  for query in queries: 
+   if not query["_id"] in list_handler: ## fetches ID of the object
     list_handler.append(query["_id"])
-   if not b in db_data:
-    db_data.append(b)
+   if not ast.literal_eval(str(query["queue"])) in db_data: ## fetches the dictionary and appends it 
+    db_data.append(ast.literal_eval(str(query["queue"])))
+

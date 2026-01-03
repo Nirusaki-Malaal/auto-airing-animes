@@ -1,33 +1,45 @@
-import os
-import libtorrent as lt
-import logging
-import time
+import os , logging
 from pymongo import MongoClient
-from pyromod import listen
-import asyncio
 from logging.handlers import RotatingFileHandler
 from pyrogram import Client
+from pyromod import listen
+from dotenv import load_dotenv
 
+## LOADING SECRETS IN THE ENVIRONMENT
+
+if os.path.exists('config.env'):
+  load_dotenv('config.env')
+
+## STORING THOSE SECRETS INTO VARIABLES
 class Config(object):
-  BOT_TOKEN = str("")
-  API_ID = int()
-  API_HASH = str("")
-  DOWNLOAD_LOCATION = str("bot/downloads/")
-  LOG_CHANNEL = "Ongoing_Animes_480p"
-  UPDATES_CHANNEL = "FIERCENETWORK"
-  DOWNLOAD_DIR = "downloads/"
-  AUTH_USERS = [5703071595]
-  BOT_USERNAME = "LOL_BOT"
-  SESSION_STRING = ""
-  DATABASE_URL = ''
-  
+  BOT_TOKEN = str(os.environ.get("BOT_TOKEN"))
+  API_ID = int(os.environ.get("API_ID"))
+  API_HASH = str(os.environ.get("API_HASH"))
+  LOG_CHANNEL = str(os.environ.get("LOG_CHANNEL"))
+  UPDATES_CHANNEL = str(os.environ.get("UPDATES_CHANNEL"))
+  DOWNLOAD_DIR = str(os.environ.get("DOWNLOAD_DIR"))
+  DETAIL_CHANNEL = int(os.environ.get("DETAIL_CHANNEL"))
+  AUTH_USERS = list(set(int(x) for x in os.environ.get("AUTH_USERS").split()))
+  BOT_USERNAME = str(os.environ.get("BOT_USERNAME"))
+  SESSION_STRING = str(os.environ.get("SESSION_STRING"))
+  DATABASE_URL = str(os.environ.get("DATABASE_URL"))
+  ROOT_DIRECTORY = os.getcwd()
+  if not DOWNLOAD_DIR.endswith("/"):
+      DOWNLOAD_DIR = str() + "/"
+
+
+## CREATING DATABASE , Cluster , Collections , Queue Channels
+
 cluster = MongoClient(Config.DATABASE_URL)
 db = cluster[Config.BOT_USERNAME]
 collection = db["data"]
 queue = db["queue"]
 channels = db["channels"]
   
-LOG_FILE_NAME = f"BOT@Log.txt"
+
+## CREATING A LOGGER FILE And A LOGGER TO REPORT DATA
+
+LOG_FILE_NAME = "BOT@Log.txt"
 
 if os.path.exists(LOG_FILE_NAME):
     with open(LOG_FILE_NAME, "r+") as f_d:
@@ -50,13 +62,18 @@ logging.getLogger("pyrogram").setLevel(logging.INFO)
 logging.getLogger("urllib3").setLevel(logging.INFO)
 LOGS = logging.getLogger(__name__)  
 
-bot = Client("Airing", api_id=Config.API_ID, api_hash=Config.API_HASH, bot_token=Config.BOT_TOKEN)
 
-if not Config.DOWNLOAD_DIR.endswith("/"):
-  Config.DOWNLOAD_DIR = str() + "/"
-if not os.path.isdir(Config.DOWNLOAD_DIR):
-  os.makedirs(Config.DOWNLOAD_DIR)
-  
-os.makedirs('torrent/')  
-ses = lt.session()
-ses.listen_on(6881, 6891)
+bot = Client(f"{Config.BOT_USERNAME}", api_id=Config.API_ID, api_hash=Config.API_HASH, bot_token=Config.BOT_TOKEN, workers=4)
+
+if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/{Config.DOWNLOAD_DIR}'):
+      os.makedirs(f'{Config.ROOT_DIRECTORY}/{Config.DOWNLOAD_DIR}')  
+
+
+if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/torrent/'):
+      os.makedirs(f'{Config.ROOT_DIRECTORY}/torrent/')  
+
+if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/encodes/'):
+      os.makedirs(f'{Config.ROOT_DIRECTORY}/encodes/') 
+
+if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/temp/'):
+      os.makedirs(f'{Config.ROOT_DIRECTORY}/temp/')   
