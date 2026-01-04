@@ -68,7 +68,6 @@ bot = Client(f"{Config.BOT_USERNAME}", api_id=Config.API_ID, api_hash=Config.API
 if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/{Config.DOWNLOAD_DIR}'):
       os.makedirs(f'{Config.ROOT_DIRECTORY}/{Config.DOWNLOAD_DIR}')  
 
-
 if not os.path.isdir(f'{Config.ROOT_DIRECTORY}/torrent/'):
       os.makedirs(f'{Config.ROOT_DIRECTORY}/torrent/')  
 
